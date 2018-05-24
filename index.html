@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Title</title>
+
+    <style type="text/css">
+        body {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+            padding-top: 20px;
+        }
+        .container {
+            max-width: 600px;
+            padding: 0 20px 0 20px;
+        }
+        .form-style {
+            margin:10px auto;
+            padding: 20px 0 10px 0;
+            font: 13px "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+        }
+        .form-style li {
+            padding: 0;
+            display: block;
+            list-style: none;
+            margin: 10px 0 0 0;
+        }
+        .form-style label {
+            margin: 0 0 5px 0;
+            padding: 0;
+            display: block;
+            font-weight: bold;
+        }
+        .form-style input[type=text],
+        .form-style input[type=date],
+        .form-style input[type=datetime],
+        .form-style input[type=number],
+        .form-style input[type=search],
+        .form-style input[type=time],
+        .form-style input[type=url],
+        .form-style input[type=email],
+        textarea,
+        select {
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            border: 1px solid #BEBEBE;
+            padding: 7px;
+            margin: 0;
+            -webkit-transition: all 0.30s ease-in-out;
+            -moz-transition: all 0.30s ease-in-out;
+            -ms-transition: all 0.30s ease-in-out;
+            -o-transition: all 0.30s ease-in-out;
+            outline: none;
+        }
+        .form-style input[type=text]:focus,
+        .form-style input[type=date]:focus,
+        .form-style input[type=datetime]:focus,
+        .form-style input[type=number]:focus,
+        .form-style input[type=search]:focus,
+        .form-style input[type=time]:focus,
+        .form-style input[type=url]:focus,
+        .form-style input[type=email]:focus,
+        .form-style textarea:focus,
+        .form-style select:focus{
+            -moz-box-shadow: 0 0 8px #88D5E9;
+            -webkit-box-shadow: 0 0 8px #88D5E9;
+            box-shadow: 0 0 8px #88D5E9;
+            border: 1px solid #88D5E9;
+        }
+        .form-style .field-divided {
+            width: 49%;
+        }
+
+        .form-style .field-long {
+            width: 100%;
+        }
+        .form-style .field-select {
+            width: 100%;
+        }
+        .form-style .field-textarea {
+            height: 100px;
+        }
+        .form-style input[type=submit], .form-style input[type=button]{
+            background: #4B99AD;
+            padding: 8px 15px 8px 15px;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+        }
+        /*.form-style input[type=submit]:hover, .form-style input[type=button]:hover{
+            background: #4691A4;
+            box-shadow:none;
+            -moz-box-shadow:none;
+            -webkit-box-shadow:none;
+        }*/
+        .form-style .required {
+            color:red;
+        }
+        .form-style input[type="file"] {
+            display: none;
+        }
+        .form-style .custom-file-upload {
+            background: #4691A4;
+            padding: 8px 15px 8px 15px;
+            border: none;
+            color: #fff;
+            display: inline-block;
+            font-size: 11px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+        .text-small {
+            font-size: 12px;
+        }
+        .text-normal {
+            font-size: 14px;
+        }
+        .pull-right {
+            text-align: right;
+        }
+        .data-hash-box {
+            background: #f6f6f6;
+            margin-top: 20px;
+            padding: 20px;
+            text-align: center;
+        }
+        .data-hash {
+            font-size: 12px;
+        }
+    </style>
+
+    <script type='text/javascript'>
+
+        var sha256 = function sha256(ascii) {
+
+            function rightRotate(value, amount) {
+                return (value>>>amount) | (value<<(32 - amount));
+            }
+
+            var mathPow = Math.pow;
+            var maxWord = mathPow(2, 32);
+            var lengthProperty = 'length';
+            var i, j;
+            var result = '';
+
+            var words = [];
+            var asciiBitLength = ascii[lengthProperty]*8;
+            var hash = sha256.h = sha256.h || [];
+            var k = sha256.k = sha256.k || [];
+            var primeCounter = k[lengthProperty];
+
+            var isComposite = {};
+            for (var candidate = 2; primeCounter < 64; candidate++) {
+                if (!isComposite[candidate]) {
+                    for (i = 0; i < 313; i += candidate) {
+                        isComposite[i] = candidate;
+                    }
+                    hash[primeCounter] = (mathPow(candidate, .5)*maxWord)|0;
+                    k[primeCounter++] = (mathPow(candidate, 1/3)*maxWord)|0;
+                }
+            }
+
+            ascii += '\x80';
+            while (ascii[lengthProperty]%64 - 56) ascii += '\x00';
+            for (i = 0; i < ascii[lengthProperty]; i++) {
+                j = ascii.charCodeAt(i);
+                if (j>>8) return;
+                words[i>>2] |= j << ((3 - i)%4)*8;
+            }
+            words[words[lengthProperty]] = ((asciiBitLength/maxWord)|0);
+            words[words[lengthProperty]] = (asciiBitLength)
+
+            for (j = 0; j < words[lengthProperty];) {
+                var w = words.slice(j, j += 16);
+                var oldHash = hash;
+                hash = hash.slice(0, 8);
+
+                for (i = 0; i < 64; i++) {
+                    var i2 = i + j;
+                    var w15 = w[i - 15], w2 = w[i - 2];
+
+                    // Iterate
+                    var a = hash[0], e = hash[4];
+                    var temp1 = hash[7]
+                        + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+                        + ((e&hash[5])^((~e)&hash[6]))
+                        + k[i]
+                        + (w[i] = (i < 16) ? w[i] : (
+                                w[i - 16]
+                                + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15>>>3))
+                                + w[i - 7]
+                                + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2>>>10))
+                            )|0
+                        );
+
+                    var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+                        + ((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));
+
+                    hash = [(temp1 + temp2)|0].concat(hash);
+                    hash[4] = (hash[4] + temp1)|0;
+                }
+
+                for (i = 0; i < 8; i++) {
+                    hash[i] = (hash[i] + oldHash[i])|0;
+                }
+            }
+
+            for (i = 0; i < 8; i++) {
+                for (j = 3; j + 1; j--) {
+                    var b = (hash[i]>>(j*8))&255;
+                    result += ((b < 16) ? 0 : '') + b.toString(16);
+                }
+            }
+            return result;
+        };
+
+        function createJsonObject() {
+
+            var jsonObject = new Object();
+            var elements = document.getElementById('formContract').elements;
+            for (var i = 0, element; element = elements[i++];) {
+                if (element.type === 'text') {
+                    jsonObject[element.name] = element.value;
+                }
+            }
+
+            return jsonObject;
+        }
+
+        function updateDataHash() {
+            var jsonObject = createJsonObject();
+            var dataHash = sha256(JSON.stringify(jsonObject));
+            document.getElementById("dataHash").innerHTML = dataHash;
+        }
+
+        function exportContract(e) {
+
+            var jsonObject = createJsonObject();
+            var dataHash = sha256(JSON.stringify(jsonObject));
+            var filename = 'contract-' + dataHash + ".json";
+
+            console.log(JSON.stringify(jsonObject));
+            console.log(filename);
+
+            var blob = new Blob([decodeURIComponent(encodeURI(JSON.stringify(jsonObject)))], { type: 'text/json;charset=utf-8;' });
+
+            if (navigator.msSaveBlob) { // IE 10+
+                navigator.msSaveBlob(blob, filename);
+            } else {
+                var link = document.createElement("a");
+                if (link.download !== undefined) {
+                    var url = URL.createObjectURL(blob);
+                    link.setAttribute('href', url);
+                    link.setAttribute('download', filename);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            }
+        }
+
+        function importContract(e) {
+
+            var file = e.target.files[0];
+
+            if (file) {
+                var reader = new FileReader();
+                reader.readAsText(file);
+                reader.onload = function (event) {
+                    var jsonData = event.target.result;
+                    var json = JSON.parse(jsonData);
+
+                    for (var key in json) {
+                        if (json.hasOwnProperty(key)) {
+                            document.getElementById(key).value = json[key];
+                        }
+                    }
+
+                    updateDataHash();
+                };
+            }
+        }
+
+    </script>
+
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="form-style pull-right">
+            <label class="custom-file-upload">
+                <input id="import" type="file"/>
+                Import
+            </label>
+            <input id="export" type="submit" value="Export" onclick="exportContract(this)"/>
+        </div>
+
+        <form id="formContract">
+            <ul class="form-style">
+                <li>
+                    <label>MTC</label>
+                    <input id="mtc" type="text" name="mtc" class="field-long" oninput="updateDataHash()"/>
+                </li>
+                <li>
+                    <label>SMS</label>
+                    <input id="sms" type="text" name="sms" class="field-long" oninput="updateDataHash()"/>
+                </li>
+                <li>
+                    <label>Data</label>
+                    <input id="data" type="text" name="data" class="field-long" oninput="updateDataHash()"/>
+                </li>
+            </ul>
+        </form>
+
+        <div class="data-hash-box">
+            <span id="dataHash" class="data-hash"></span>
+        </div>
+
+    </div>
+
+    <script>
+
+        document.getElementById("import").addEventListener("change", importContract, false);
+
+        var formContract = document.getElementById('formContract');
+        formContract.onchange = function() {
+            updateDataHash();
+        };
+
+    </script>
+
+</body>
+</html>
+
+
